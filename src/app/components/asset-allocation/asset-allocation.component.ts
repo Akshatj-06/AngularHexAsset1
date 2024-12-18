@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetAllocationModel } from '../../models/AssetAllocation';
 import { AssetAllocationServiceService } from '../../services/asset-allocation-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-asset-allocation',
@@ -14,7 +15,7 @@ export class AssetAllocationComponent {
   assetAllocationList: AssetAllocationModel[]=[];
   assetAllocationObj: AssetAllocationModel= new AssetAllocationModel();
   assetAllocationSrv= inject(AssetAllocationServiceService)
-
+  taostr = inject(ToastrService);
   ngOnInit(): void {
     this.getAssetAllocation();
   }
@@ -31,14 +32,14 @@ export class AssetAllocationComponent {
 
   onSaveAssetAllocation(){
     this.assetAllocationSrv.onSaveAssetAllocation(this.assetAllocationObj).subscribe((result:any)=>{
-      alert("Asset Allocated Successfully");
+      this.taostr.success('Asset Allocated Successfully');
       this.getAssetAllocation();
     })
   }
 
   onUpdateAssetAllocation(){
     this.assetAllocationSrv.onUpdateAssetAllocation(this.assetAllocationObj).subscribe((result:any)=>{
-      alert("Asset Allocation Updated Successfully");
+      this.taostr.success('Asset Allocation Updated Successfully');
       this.getAssetAllocation();
     })
   }
@@ -47,7 +48,7 @@ export class AssetAllocationComponent {
     const isDelete = confirm("Are you sure you want to delete the Asset Allocation")
     if(isDelete) {
       this.assetAllocationSrv.onDeleteAssetAllocation(id).subscribe((result:any)=>{
-        alert("Asset Allocation Deleted Successfully");
+        this.taostr.success('Asset Allocation Deleted Successfully');
         this.getAssetAllocation();
       })
     }

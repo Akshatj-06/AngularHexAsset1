@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuditRequestModel } from '../../models/AuditRequest';
 import { AuditRequestService } from '../../services/audit-request.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-audit-request',
@@ -14,7 +15,8 @@ export class AuditRequestComponent {
 
   auditRequestList: AuditRequestModel[]=[];
   auditRequestObj: AuditRequestModel = new AuditRequestModel
-  auditRequestSrv= inject(AuditRequestService)
+  auditRequestSrv= inject(AuditRequestService);
+  toastr = inject(ToastrService);
 
   ngOnInit(): void {
     this.getAuditRequest();
@@ -32,14 +34,14 @@ export class AuditRequestComponent {
 
   onSaveAuditRequest(){
     this.auditRequestSrv.onSaveAuditRequest(this.auditRequestObj).subscribe((result:any)=>{
-      alert("Audit Saved Successfully");
+      this.toastr.success('Audit Saved Successfully');
       this.getAuditRequest();
     })
   }
 
   onUpdateAuditRequest(){
     this.auditRequestSrv.onUpdateAuditRequest(this.auditRequestObj).subscribe((result:any)=>{
-      alert("Audit Updated Successfully");
+      this.toastr.success('Audit Updated Successfully');
       this.getAuditRequest();
     })
   }
@@ -48,11 +50,12 @@ export class AuditRequestComponent {
     const isDelete = confirm("Are you sure you want to delete the Audit")
     if(isDelete) {
       this.auditRequestSrv.onDeleteAuditRequest(id).subscribe((result:any)=>{
-        alert("Audit Deleted Successfully");
+        this.toastr.success('Audit Deleted Successfully');
+        
         this.getAuditRequest();
       })
     }
-    
+
   }
 
   resetAudit() {

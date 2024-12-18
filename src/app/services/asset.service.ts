@@ -7,7 +7,7 @@ import { AssetModel } from '../models/Asset';
 })
 export class AssetService {
 
-  apiUrl: string = "https://localhost:7209/api/Asset/"
+  apiUrl: string = "http://localhost:7209/api/Asset/"
 
   constructor(private http:HttpClient) { }
 

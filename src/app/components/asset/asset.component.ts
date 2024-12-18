@@ -51,7 +51,7 @@ export class AssetComponent implements OnInit {
         this.getAsset();
       })
     }
-    
+
   }
 
   resetAsset() {

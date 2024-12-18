@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AssetRequestModel } from '../../models/AssetRequest';
 import { AssetRequestService } from '../../services/asset-request.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-asset-request',
@@ -13,7 +14,8 @@ export class AssetRequestComponent {
 
   assetRequestList: AssetRequestModel[]=[];
   assetRequestObj: AssetRequestModel= new AssetRequestModel();
-  assetRequestSrv= inject(AssetRequestService)
+  assetRequestSrv= inject(AssetRequestService);
+  toastr = inject(ToastrService);
 
  ngOnInit(): void {
   this.getAssetRequest();
@@ -31,14 +33,14 @@ export class AssetRequestComponent {
 
   onSaveAssetRequest(){
     this.assetRequestSrv.onSaveAssetRequest(this.assetRequestObj).subscribe((result:any)=>{
-      alert("Asset Request Saved Successfully")
+      this.toastr.success('Asset Request Saved Successfully');
       this.getAssetRequest();
     })
   }
 
   onUpdateAssetRequest(){
     this.assetRequestSrv.onUpdateAssetRequest(this.assetRequestObj).subscribe((result:any)=>{
-      alert("Asset Request Updated Successfully");
+      this.toastr.success('Asset Request Updated Successfully');
       this.getAssetRequest();
     })
   }
@@ -47,11 +49,12 @@ export class AssetRequestComponent {
     const isDelete = confirm("Are you sure you want to delete the Asset Request")
     if(isDelete) {
       this.assetRequestSrv.onDeleteAssetRequest(id).subscribe((result:any)=>{
-        alert("Asset Request Deleted Successfully");
+        this.toastr.success('Asset Request Deleted Successfully');
+
         this.getAssetRequest();
       })
     }
-    
+
   }
 
   resetAssetRequest() {

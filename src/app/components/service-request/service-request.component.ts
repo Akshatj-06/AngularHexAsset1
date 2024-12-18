@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ServiceRequestModel } from '../../models/ServiceRequest';
 import { ServiceRequestService } from '../../services/service-request.service';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-service-request',
@@ -13,7 +14,8 @@ export class ServiceRequestComponent {
 
   serviceRequestList: ServiceRequestModel[]=[];
   serviceRequestObj: ServiceRequestModel= new ServiceRequestModel
-  serviceRequestSrv = inject(ServiceRequestService)
+  serviceRequestSrv = inject(ServiceRequestService);
+  toastr = inject(ToastrService);
 
   ngOnInit(): void {
     this.getServiceRequest();
@@ -31,14 +33,14 @@ export class ServiceRequestComponent {
 
   onSaveServiceRequest(){
     this.serviceRequestSrv.onSaveServiceRequest(this.serviceRequestObj).subscribe((result:any)=>{
-      alert("Service Request Saved Successfully")
+      this.toastr.success('Service Request Saved Successfully');
       this.getServiceRequest();
     })
   }
 
   onUpdateServiceRequest(){
     this.serviceRequestSrv.onUpdateServiceRequest(this.serviceRequestObj).subscribe((result:any)=>{
-      alert("Service Request Updated Successfully");
+      this.toastr.success('Service Request Updated Successfully');
       this.getServiceRequest();
     })
   }
@@ -47,11 +49,12 @@ export class ServiceRequestComponent {
     const isDelete = confirm("Are you sure you want to delete the Service Request")
     if(isDelete) {
       this.serviceRequestSrv.onDeleteServiceRequest(id).subscribe((result:any)=>{
-        alert("Service Request Deleted Successfully");
+        this.toastr.success('Service Request Deleted Successfully');
+
         this.getServiceRequest();
       })
     }
-    
+
   }
 
   resetServiceRequest() {
